@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Siz Uchun</title>
+<style>
+    body {
+        background: #0f0f0f;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        color: white;
+        font-family: 'Segoe UI', sans-serif;
+        margin: 0;
+    }
+
+    .heart-container {
+        position: relative;
+        width: 200px;
+        height: 180px;
+        margin-bottom: 30px;
+    }
+
+    /* Perfect heart shape */
+    .heart {
+        position: absolute;
+        width: 100px;
+        height: 90px;
+        left: 50px;
+        top: 45px;
+        overflow: hidden;
+        transform: rotate(0deg); /* Remove rotation */
+    }
+
+    /* Create the heart shape using a single element with clip-path */
+    .heart-shape {
+        position: absolute;
+        width: 100px;
+        height: 90px;
+        background: #222;
+        clip-path: path('M50 15C55 5 65 0 75 0C85 0 95 5 100 15C105 25 105 35 100 45C95 55 85 65 75 75C65 85 55 95 50 105C45 95 35 85 25 75C15 65 5 55 0 45C-5 35 -5 25 0 15C5 5 15 0 25 0C35 0 45 5 50 15Z');
+    }
+
+    /* The fill container that will clip the colored fill */
+    .fill-container {
+        position: absolute;
+        width: 100px;
+        height: 90px;
+        clip-path: path('M50 15C55 5 65 0 75 0C85 0 95 5 100 15C105 25 105 35 100 45C95 55 85 65 75 75C65 85 55 95 50 105C45 95 35 85 25 75C15 65 5 55 0 45C-5 35 -5 25 0 15C5 5 15 0 25 0C35 0 45 5 50 15Z');
+        overflow: hidden;
+    }
+
+    .fill {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 0%;
+        background: linear-gradient(#ff4d6d, #ff1a40);
+        transition: height 0.6s ease;
+    }
+
+    .name {
+        position: absolute;
+        top: 70px;
+        width: 100%;
+        text-align: center;
+        font-size: 22px;
+        opacity: 0;
+        transition: opacity 1.5s ease;
+        z-index: 2;
+        pointer-events: none;
+        font-weight: bold;
+        text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+    }
+
+    input[type=range] {
+        width: 220px;
+        margin-top: 20px;
+        -webkit-appearance: none;
+        appearance: none;
+        height: 6px;
+        background: #333;
+        border-radius: 3px;
+        outline: none;
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        background: #ff4d6d;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    input[type=range]::-webkit-slider-thumb:hover {
+        transform: scale(1.1);
+        background: #ff1a40;
+    }
+
+    input[type=range]::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        background: #ff4d6d;
+        border-radius: 50%;
+        cursor: pointer;
+        border: none;
+        transition: all 0.2s;
+    }
+
+    .label {
+        margin-top: 15px;
+        opacity: 0.7;
+        font-size: 14px;
+    }
+</style>
+</head>
+<body>
+
+<div class="heart-container">
+    <div class="heart">
+        <!-- Heart outline -->
+        <div class="heart-shape"></div>
+        <!-- Container for the fill with same heart shape clip -->
+        <div class="fill-container">
+            <div class="fill" id="fill"></div>
+        </div>
+    </div>
+    <div class="name" id="name">Dinara</div>
+</div>
+
+<input type="range" min="0" max="100" value="0" id="heat">
+<div class="label">Qo'lingning iliqligi bilan uni to'ldir</div>
+
+<script>
+    const heat = document.getElementById("heat");
+    const fill = document.getElementById("fill");
+    const name = document.getElementById("name");
+
+    heat.addEventListener("input", () => {
+        // Update fill height
+        fill.style.height = heat.value + "%";
+        
+        // Update name opacity based on fill level
+        if (heat.value > 40) {
+            name.style.opacity = (heat.value - 40) / 60;
+        } else {
+            name.style.opacity = 0;
+        }
+        
+        // Optional: Add a pulsing effect when almost full
+        if (heat.value > 90) {
+            name.style.textShadow = '0 0 15px rgba(255, 77, 109, 0.8)';
+        } else {
+            name.style.textShadow = '0 0 10px rgba(0, 0, 0, 0.7)';
+        }
+    });
+
+    // Optional: Add some initial animation
+    setTimeout(() => {
+        heat.value = 5;
+        fill.style.height = '5%';
+    }, 500);
+</script>
+
+</body>
+</html>
